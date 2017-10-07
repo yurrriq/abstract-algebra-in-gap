@@ -11,8 +11,8 @@ gap     ?= ${GAPROOT}/bin/gap.sh
 
 
 all: \
-	lib/PerfectNumbers.gd \
-	lib/PerfectNumbers.gi \
+	gap/PerfectNumbers.gd \
+	gap/PerfectNumbers.gi \
 	tst/PerfectNumbers.tst \
 	tst/testall.g \
 	doc \
@@ -20,15 +20,15 @@ all: \
 	check
 
 
-check: *.g lib/*.gd lib/*.gi tst/*.g tst/*.tst
+check: *.g gap/*.gd gap/*.gi tst/*.g tst/*.tst
 	@ ${gap} -l "${GAPROOT};." -q tst/testall.g
 
 
-doc: makedoc.g *.g lib/*.gd lib/*.gi tst/*.tst
+doc: makedoc.g *.g gap/*.gd gap/*.gi tst/*.tst
 	@ ${gap} -b $<
 
 
-lib/*.gd lib/*.gi tst/*.g tst/*.tst: aaig.nw
+gap/*.gd gap/*.gi tst/*.g tst/*.tst: aaig.nw
 	${tangle}
 
 

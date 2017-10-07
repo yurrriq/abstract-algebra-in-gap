@@ -1,1 +1,1 @@
-ReadPackage( "AAIG", "lib/PerfectNumbers.gi" );
+ReadPackage( "AAIG", "gap/PerfectNumbers.gi" );

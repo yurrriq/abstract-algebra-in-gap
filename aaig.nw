@@ -160,7 +160,7 @@ or more specifically, positive integers.
 IsInt and IsPosInt
 @
 
-<<lib/PerfectNumbers.gd>>=
+<<gap/PerfectNumbers.gd>>=
 #! @Chapter PerfectNumbers
 
 #! @Section The IsPerfect() Operation
@@ -172,7 +172,7 @@ DeclareOperation( "IsPerfect",
     [ <<Filter for positive integers>> ] );
 @
 
-<<lib/PerfectNumbers.gi>>=
+<<gap/PerfectNumbers.gi>>=
 #! @Chapter PerfectNumbers
 
 #! @Section The IsPerfect() Operation
