@@ -5,32 +5,50 @@ GAPROOT ?= /run/current-system/sw/share/gap/build-dir
 gap     ?= ${GAPROOT}/bin/gap.sh
 
 
-.SUFFIXES: .tex .pdf
-.tex.pdf:
-	latexmk --shell-escape -outdir=tex -pdf $<
-
-
-all: \
+srcs := \
+	PackageInfo.g \
+	default.nix \
+	init.g \
+	makedoc.g \
+	read.g \
 	gap/PerfectNumbers.gd \
 	gap/PerfectNumbers.gi \
 	tst/PerfectNumbers.tst \
-	tst/testall.g \
+	tst/testall.g
+
+
+.SUFFIXES: .tex .pdf
+.tex.pdf:
+	latexmk -outdir=tex -pdf $<
+
+
+all: \
+	${srcs} \
+	check \
 	docs \
-	tex/aaig.pdf \
-	check
+	docs/aaig.pdf \
 
 
-check: *.g gap/*.gd gap/*.gi tst/*.g tst/*.tst
+clean:
+	@ latexmk -f -C -outdir=tex -pdf tex/aaig.tex
+	@ rm -fR ${srcs} auto/ docs/ gap/ result tex/_minted* tex/aaig.tex tst/
+
+
+check: ${srcs}
 	@ ${gap} -l "${GAPROOT};." -q tst/testall.g
 
 
-docs: makedoc.g *.g gap/*.gd gap/*.gi tst/*.tst
+docs: makedoc.g ${srcs}
 	@ ${gap} -b $<
 
 
-gap/*.gd gap/*.gi tst/*.g tst/*.tst: aaig.nw
+${srcs}: aaig.nw
+	@ mkdir -p $(dir $@)
 	${tangle}
 
 
 tex/aaig.tex: aaig.nw
 	${weave}
+
+docs/aaig.pdf: tex/aaig.pdf
+	@ ln -f $< $@

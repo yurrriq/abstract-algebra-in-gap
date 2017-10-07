@@ -242,11 +242,120 @@ Finally, force quit GAP, in case it hasn't exited already:
 
 \nwenddocs{}\nwbegincode{34}\sublabel{NWVU3sy-1eZIR9-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWVU3sy-1eZIR9-1}}}\moddef{Force quit GAP~{\nwtagstyle{}\subpageref{NWVU3sy-1eZIR9-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWVU3sy-2kG11m-1}}\nwenddeflinemarkup
 FORCE_QUIT_GAP(1);
-\nwused{\\{NWVU3sy-2kG11m-1}}\nwendcode{}
+\nwused{\\{NWVU3sy-2kG11m-1}}\nwendcode{}\nwbegindocs{35}\nwdocspar
+
+\chapter{Miscellaneous}
+
+\nwenddocs{}\nwbegincode{36}\sublabel{NWVU3sy-438DD7-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWVU3sy-438DD7-1}}}\moddef{PackageInfo.g~{\nwtagstyle{}\subpageref{NWVU3sy-438DD7-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
+SetPackageInfo( rec(
+    PackageName := "AAIG",
+    Subtitle := "Abstract Algebra in GAP",
+    Version := "0.0.1",
+    Date := "06/10/2017", # NOTE: dd/mm/yyyy
+    PackageWWWHome :=
+        Concatenation( "https://yurrriq.github.io/",
+                       LowercaseString( ~.PackageName ) ),
+    SourceRepository := rec(
+        Type := "git",
+        URL := "https://github.com/yurrriq/abstract-algebra-in-gap"
+    ),
+    IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
+    SupportEmail := "eric@ericb.me",
+    Persons := [
+        rec(
+          LastName := "Bailey",
+          FirstNames := "Eric",
+          IsAuthor := true,
+          IsMaintainer := true,
+          Email := ~.SupportEmail,
+          # WWWHome := ...,
+          # PostalAddress := ...,
+          # Place := ...,
+          # Institution := ...
+        )
+    ],
+    Status := "other",
+    README_URL := Concatenation( ~.PackageWWWHome, "/README.md" ),
+    PackageInfoURL := Concatenation( ~.PackageWWWHome, "/PackageInfo.g" ),
+    # TODO: AbstractHTML := ...,
+    PackageDoc := rec(
+      BookName := "AAIG",
+      ArchiveURLSubset := ["docs"],
+      HTMLStart := "docs/chap0.html",
+      PDFFile := "docs/manual.pdf",
+      SixFile := "docs/manual.six",
+      LongTitle := "Abstract Algebra in GAP"
+    ),
+    Dependencies := rec(
+      GAP := "4.8.8",
+      NeededOtherPackages := [],
+      SuggestedOtherPackages := [],
+      ExternalConditions := []
+    ),
+    AvailabilityTest := ReturnTrue,
+    TestFile := "tst/testall.g",
+    Autoload := false,
+    # Keywords := [ ... ],
+    # BannerString := ...
+));
+\nwnotused{PackageInfo.g}\nwendcode{}\nwbegindocs{37}\nwdocspar
+
+\nwenddocs{}\nwbegincode{38}\sublabel{NWVU3sy-1DZ2E9-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWVU3sy-1DZ2E9-1}}}\moddef{init.g~{\nwtagstyle{}\subpageref{NWVU3sy-1DZ2E9-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
+ReadPackage( "AAIG", "gap/PerfectNumbers.gd" );
+\nwnotused{init.g}\nwendcode{}\nwbegindocs{39}\nwdocspar
+
+\nwenddocs{}\nwbegincode{40}\sublabel{NWVU3sy-31xJ2Y-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWVU3sy-31xJ2Y-1}}}\moddef{makedoc.g~{\nwtagstyle{}\subpageref{NWVU3sy-31xJ2Y-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
+LoadPackage( "AutoDoc" );
+AutoDoc( rec( autodoc := true,
+              dir := "docs",
+              scaffold := true ) );
+
+QUIT;
+\nwnotused{makedoc.g}\nwendcode{}\nwbegindocs{41}\nwdocspar
+
+\nwenddocs{}\nwbegincode{42}\sublabel{NWVU3sy-3V1x8B-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWVU3sy-3V1x8B-1}}}\moddef{read.g~{\nwtagstyle{}\subpageref{NWVU3sy-3V1x8B-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
+ReadPackage( "AAIG", "gap/PerfectNumbers.gi" );
+\nwnotused{read.g}\nwendcode{}\nwbegindocs{43}\nwdocspar
+
+\nwenddocs{}\nwbegincode{44}\sublabel{NWVU3sy-3WLOrF-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWVU3sy-3WLOrF-1}}}\moddef{default.nix~{\nwtagstyle{}\subpageref{NWVU3sy-3WLOrF-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
+with import <nixpkgs> \{\};
+
+
+let
+
+  gap = callPackage ./nix/gap.nix \{\};
+
+in
+
+
+stdenv.mkDerivation rec \{
+  name = "howtogap-$\{version\}";
+  version = builtins.readFile ./VERSION;
+  src = ./.;
+
+  buildInputs = [
+    gap
+
+    # coreutils
+    less
+    # which
+  ];
+
+  checkFlags = [ "GAPROOT=$\{gap\}/share/gap/build-dir" ];
+
+  installPhase = ''
+    $\{gap\}/bin/gap.sh -b makedoc.g
+    local pkgdir=$out/share/gap/build-dir/pkg/aiig
+    mkdir -p $pkgdir
+    cp -R \{PackageInfo,init,makedoc,read\}.g docs/ gap/ tst/ $pkgdir
+  '';
+\}
+\nwnotused{default.nix}\nwendcode{}
 
 \nwixlogsorted{c}{{All perfect numbers less than 1000}{NWVU3sy-1gKlN7-1}{\nwixd{NWVU3sy-1gKlN7-1}\nwixu{NWVU3sy-4QwazQ-1}\nwixu{NWVU3sy-2W1Ke-1}}}%
 \nwixlogsorted{c}{{Call TestDirectory}{NWVU3sy-Tx3aY-1}{\nwixu{NWVU3sy-2kG11m-1}\nwixd{NWVU3sy-Tx3aY-1}}}%
 \nwixlogsorted{c}{{Compute the aliquot sum of a positive integer}{NWVU3sy-xApnh-1}{\nwixd{NWVU3sy-xApnh-1}}}%
+\nwixlogsorted{c}{{default.nix}{NWVU3sy-3WLOrF-1}{\nwixd{NWVU3sy-3WLOrF-1}}}%
 \nwixlogsorted{c}{{Determine whether a positive integer is perfect}{NWVU3sy-3gU79I-1}{\nwixd{NWVU3sy-3gU79I-1}}}%
 \nwixlogsorted{c}{{Determine whether a positive integer is perfect, using Sigma}{NWVU3sy-1Ey6ln-1}{\nwixd{NWVU3sy-1Ey6ln-1}\nwixu{NWVU3sy-4QwazQ-1}}}%
 \nwixlogsorted{c}{{Euclid's IX.36}{NWVU3sy-hWGw1-1}{\nwixd{NWVU3sy-hWGw1-1}}}%
@@ -255,15 +364,19 @@ FORCE_QUIT_GAP(1);
 \nwixlogsorted{c}{{Force quit GAP}{NWVU3sy-1eZIR9-1}{\nwixu{NWVU3sy-2kG11m-1}\nwixd{NWVU3sy-1eZIR9-1}}}%
 \nwixlogsorted{c}{{gap/PerfectNumbers.gd}{NWVU3sy-fl7dQ-1}{\nwixd{NWVU3sy-fl7dQ-1}}}%
 \nwixlogsorted{c}{{gap/PerfectNumbers.gi}{NWVU3sy-4QwazQ-1}{\nwixd{NWVU3sy-4QwazQ-1}}}%
+\nwixlogsorted{c}{{init.g}{NWVU3sy-1DZ2E9-1}{\nwixd{NWVU3sy-1DZ2E9-1}}}%
 \nwixlogsorted{c}{{Load the package}{NWVU3sy-1Gte5o-1}{\nwixu{NWVU3sy-2kG11m-1}\nwixd{NWVU3sy-1Gte5o-1}}}%
+\nwixlogsorted{c}{{makedoc.g}{NWVU3sy-31xJ2Y-1}{\nwixd{NWVU3sy-31xJ2Y-1}}}%
 \nwixlogsorted{c}{{not all such numbers are perfect}{NWVU3sy-13ZiKJ-1}{\nwixd{NWVU3sy-13ZiKJ-1}}}%
+\nwixlogsorted{c}{{PackageInfo.g}{NWVU3sy-438DD7-1}{\nwixd{NWVU3sy-438DD7-1}}}%
+\nwixlogsorted{c}{{read.g}{NWVU3sy-3V1x8B-1}{\nwixd{NWVU3sy-3V1x8B-1}}}%
 \nwixlogsorted{c}{{TestDirectory options record}{NWVU3sy-1SF58G-1}{\nwixd{NWVU3sy-1SF58G-1}\nwixu{NWVU3sy-Tx3aY-1}}}%
 \nwixlogsorted{c}{{The list of directory objects}{NWVU3sy-2elpU5-1}{\nwixd{NWVU3sy-2elpU5-1}\nwixu{NWVU3sy-Tx3aY-1}}}%
 \nwixlogsorted{c}{{tst/PerfectNumbers.tst}{NWVU3sy-2W1Ke-1}{\nwixd{NWVU3sy-2W1Ke-1}}}%
 \nwixlogsorted{c}{{tst/testall.g}{NWVU3sy-2kG11m-1}{\nwixd{NWVU3sy-2kG11m-1}}}%
 \nwixlogsorted{i}{{\nwixident{AliquotSum}}{AliquotSum}}%
 \nwixlogsorted{i}{{\nwixident{IsPerfect}}{IsPerfect}}%
-\nwbegindocs{35}\nwdocspar
+\nwbegindocs{45}\nwdocspar
 
 \chapter{Chunks}
 \nowebchunks
