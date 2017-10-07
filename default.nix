@@ -27,6 +27,6 @@ stdenv.mkDerivation rec {
     ${gap}/bin/gap.sh -b makedoc.g
     local pkgdir=$out/share/gap/build-dir/pkg/aiig
     mkdir -p $pkgdir
-    cp -R {PackageInfo,init,makedoc,read}.g doc/ gap/ tst/ $pkgdir
+    cp -R {PackageInfo,init,makedoc,read}.g docs/ gap/ tst/ $pkgdir
   '';
 }

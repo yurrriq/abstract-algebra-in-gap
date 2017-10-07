@@ -34,10 +34,10 @@ PackageInfoURL :=
 # TODO: AbstractHTML := ...,
 PackageDoc := rec(
   BookName := "AAIG",
-  ArchiveURLSubset := ["doc"],
-  HTMLStart := "doc/chap0.html",
-  PDFFile := "doc/manual.pdf",
-  SixFile := "doc/manual.six",
+  ArchiveURLSubset := ["docs"],
+  HTMLStart := "docs/chap0.html",
+  PDFFile := "docs/manual.pdf",
+  SixFile := "docs/manual.six",
   LongTitle := "Abstract Algebra in GAP"
 ),
 Dependencies := rec(

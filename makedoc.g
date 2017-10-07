@@ -1,4 +1,6 @@
 LoadPackage( "AutoDoc" );
-AutoDoc( rec( scaffold := true,
-              autodoc := true ) );
+AutoDoc( rec( autodoc := true,
+              dir := "docs",
+              scaffold := true ) );
+
 QUIT;

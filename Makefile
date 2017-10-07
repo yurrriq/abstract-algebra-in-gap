@@ -15,7 +15,7 @@ all: \
 	gap/PerfectNumbers.gi \
 	tst/PerfectNumbers.tst \
 	tst/testall.g \
-	doc \
+	docs \
 	tex/aaig.pdf \
 	check
 
@@ -24,7 +24,7 @@ check: *.g gap/*.gd gap/*.gi tst/*.g tst/*.tst
 	@ ${gap} -l "${GAPROOT};." -q tst/testall.g
 
 
-doc: makedoc.g *.g gap/*.gd gap/*.gi tst/*.tst
+docs: makedoc.g *.g gap/*.gd gap/*.gi tst/*.tst
 	@ ${gap} -b $<
 
 
